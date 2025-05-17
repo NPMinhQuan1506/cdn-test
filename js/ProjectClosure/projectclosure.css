@@ -1,0 +1,224 @@
+﻿#btnWelcome_Modal {
+    transition: 0.3s ease-in-out !important;
+    text-transform: none !important;
+    letter-spacing: 1.1px !important;
+    font-size: 15px !important;
+    margin-bottom: 0px;
+    border-radius: 0px 0px 15px 0;
+    border: white solid 1px;
+}
+
+    #btnWelcome_Modal i {
+      /*  animation: ringring 2s linear infinite;*/
+    }
+
+
+
+
+
+@keyframes ringring {
+    from {
+        transform: rotate(0);
+    }
+
+    50% {
+        transform: rotate(10deg) scale(1.1);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+#GettingStart_StepDetail .block {
+}
+
+#GettingStart_ListStep .getstep_item.active, #GettingStart_ListStep .getstep_item:hover {
+    background-color: rgba(216,243,233,0.3);
+    border-radius: 0 50px 50px 0 !important;
+    transition: 0.2s;
+}
+
+#GettingStart_ListStep .getstep_item.active {
+    background-color: rgba(var(--bs-primary) );
+    color: #fff !important;
+}
+
+#GettingStart_ListStep .getstep_item {
+    padding: 0.5em 0 !important;
+    padding-left: 20px !important;
+}
+
+.groupPerDemo__item {
+    transition: 0.3s all;
+    box-shadow: 0 8px 26px -4px rgb(159 159 159 / 15%), 0 8px 9px -5px #fff8df !important;
+}
+
+    .groupPerDemo__item:hover {
+        box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%), 0 8px 9px -5px rgb(20 20 20 / 6%) !important;
+      
+    }
+ 
+
+.social:hover .solcialItem {
+    opacity: 1;
+    right: 100%;
+}
+
+.solcialItem {
+    opacity: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: 0.3s all;
+    background: #fff;
+    border-radius: 50px;
+    padding: 3px 15px;
+    background: #fff;
+    box-shadow: 0px 5px 20px 0px #bebebe;
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 13px;
+    text-transform: none;
+}
+
+#GettingStart_Btn {
+    border-radius: 0px 0px 0px 15px;
+    border: white solid 1px;
+}
+#GettingStart_BlockBtn .vr {
+    width: 0px;
+    height: 35px;
+}
+#GettingStart_Btn:hover {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+#btnWelcome_Modal:hover {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+.guidetrialarea {
+    display:flex;
+    transform: translateX(-50%) ;
+    left: 50%;
+    top: 0 ;
+    position: fixed !important;
+    z-index: 1020;
+}
+#GettingStart_Btn {
+    border-radius: 0px 0px 0px 15px;
+    transition: 0.3s ease-in-out !important;
+    text-transform: none !important;
+    letter-spacing: 1.1px !important;
+    font-size: 13px !important;
+}
+
+    #GettingStart_Btn > .gettingstart-icon {
+        animation: ringring 1s linear infinite;
+    }
+
+@media only screen and (max-width: 900px) {
+    #GettingStart_StepDetail {
+        height: 70vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    #GettingStart_ListStep {
+        display: none !important;
+    }
+    .guidetrialarea {
+        display: block;
+        transform: translateX(0);
+        right: 0;
+        top: 50px !important;
+        left: unset;
+    }
+    #GettingStart_Btn .lbguide{
+           display:none;
+    }
+    #btnWelcome_Modal {
+        border-radius: 0px 0px 0px 15px;
+        padding: 9px 8px 11px 10px !important;
+        width: 100%;
+    }
+    #GettingStart_Btn {
+        border-radius: 15px 0px 0px 0px;
+        padding: 12px 8px 8px 10px !important;
+    }
+    .groupPerDemo__item .des {
+        min-height: unset;
+    }
+}
+@media only screen and (min-width: 901px) {
+    .groupPerDemo__item .des {
+        min-height: 90px;
+    }
+    #GettingStart_StepDetail {
+        height: 85vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    #GettingStart_ListStepSM {
+        display: none !important;
+    }
+
+    #GettingStart_StepDetail .video {
+        
+    }
+}
+#GettingStart_StepDetail p, #GettingStart_StepDetail span {
+    color: #001641 !important;
+    font-size: 14px !important;
+    margin-bottom: 0rem !important;
+}
+#GettingStart_StepDetail .image img {
+   max-height:400px;
+}
+
+
+@media (max-width: 1200px) {
+    #blockTrialName {
+        display: none;
+    }
+    .mini_grouparea{
+        display:none;
+    }
+}
+#BodyMain.g-sidenav-pinned #blockTrialName {
+    display:block !important;
+}
+#BodyMain.g-sidenav-pinned .mini_grouparea {
+    display: block !important;
+}
+#BodyMain.g-sidenav-hidden #blockTrialName {
+    display: none;
+}
+#BodyMain.g-sidenav-hidden .mini_grouparea {
+    display: none;
+}
+
+#minisocial_area{
+    top: 200px;
+    right: 30px !important;
+    left: unset !important;
+}
+.minisocial_arealist {
+    height: 140px;
+    transition: height 0.25s
+}
+.minisocial_areablock:not(.show) .minisocial_arealist {
+    height: 0 !important;
+    opacity: 0;
+}
+.minisocial_areablock #minisocial_btn {
+    transition: 0.25s;
+    transform: rotate(0);
+}
+.minisocial_areablock.show #minisocial_btn {
+    transform: rotate(180deg);
+}
+#GettingStart_ListStepSM .nav-item {
+    max-width: unset !important;
+}
+ 
