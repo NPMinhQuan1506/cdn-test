@@ -1,0 +1,268 @@
+﻿<input id="date-input" class="form-control" name="dob" placeholder="dd/mm/yyyy" readonly />
+
+<div class="overlay" id="popup-overlay">
+    <div class="popup">
+        <div class="bodclose cursor-pointer" onclick="birsel_bodClose()">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="highlight-overlay"></div>
+        <div class="spinner-wrapper">
+            <div class="spinner" id="monthSpinner"></div>
+            <div class="spinner" id="daySpinner"></div>
+            <div class="spinner" id="yearSpinner"></div>
+        </div>
+        <button class="btn _bg-primary action mb-0 px-5 rounded-3" id="doneBtn">OK</button>
+    </div>
+</div>
+<script type="text/javascript">
+    
+    const dateInput=document.getElementById("date-input");
+    const overlay=document.getElementById("popup-overlay");
+    const doneBtn=document.getElementById("doneBtn");
+
+    const monthEl=document.getElementById("monthSpinner");
+    const dayEl=document.getElementById("daySpinner");
+    const yearEl=document.getElementById("yearSpinner");
+    const _today=new Date();
+    const maxYear=_today.getFullYear();
+    const maxMonth=_today.getMonth()+1;
+    const maxDay=_today.getDate();
+    const months=Array.from({length: 12},(_,i) =>   decodeHtml(_monthVar[i]));
+    const years=Array.from({length: maxYear-1900+1},(_,i) => `${1900+i}`);
+    const defaultYear=(new Date().getFullYear())-15;
+    const defaultMonth=(new Date().getMonth())-2; 
+    const defaultDay=0;
+    function birsel_enableClickToScroll(spinner) {
+        spinner.addEventListener('click',(e) => {
+            const itemHeight=40;
+            const children=Array.from(spinner.children);
+            const index=children.indexOf(e.target);
+            const scrollIndex=index-4;
+            birsel_scrollToIndex(spinner,scrollIndex);
+        });
+    }
+    function birsel_populate(el,items) {
+        birsel_enableClickToScroll(monthEl);
+        birsel_enableClickToScroll(dayEl);
+        birsel_enableClickToScroll(yearEl);
+        el.innerHTML='';
+        for(let i=0;i<2;i++) {
+            const blank=document.createElement("div");
+            blank.textContent='';
+            el.appendChild(blank);
+        }
+
+        items.forEach(item => {
+            const div=document.createElement("div");
+            div.textContent=item;
+            el.appendChild(div);
+        });
+
+        for(let i=0;i<2;i++) {
+            const blank=document.createElement("div");
+            blank.textContent='';
+            el.appendChild(blank);
+        }
+    }
+    function birsel_scrollToIndex(el,_index) {
+        el.scrollTo({top: (_index+2)*40,behavior: "auto"});
+        highlight(el);
+    }
+    function highlight(el) {
+        const index=Math.round(el.scrollTop/40);
+        Array.from(el.children).forEach((child,i) => {
+            child.classList.toggle('highlight',i===index+2);
+        });
+    }
+    function birsel_attachScroll(el,callback) {
+        let timeout;
+        el.addEventListener("scroll",() => {
+            clearTimeout(timeout);
+            timeout=setTimeout(() => {
+                const index=Math.round(el.scrollTop/40);
+                el.scrollTo({top: index*40,behavior: "smooth"});
+                highlight(el);
+                callback?.();
+            },100);
+        });
+    }
+    function birsel_daysInMonth(month,year) {
+        return new Date(year,month,0).getDate();
+    }
+
+    let lastMonth=null;
+    let lastYear=null;
+
+    function birsel_updateDaysOnce() {
+        const yearIndex=Math.round(yearEl.scrollTop/40)-2;
+        const monthIndex=Math.round(monthEl.scrollTop/40)-2;
+        const year=1900+yearIndex+2;
+        const month=monthIndex+3;
+        if(year===lastYear&&month===lastMonth) return;
+        lastYear=year;
+        lastMonth=month;
+        const max=birsel_daysInMonth(month,year);
+        const isCurrentMonth=year===maxYear&&month===maxMonth;
+        const days=Array.from({length: isCurrentMonth? maxDay:max},(_,i) => `${i+1}`);
+        birsel_populate(dayEl,days);
+    }
+
+    dateInput.addEventListener("click",() => {
+        overlay.style.display="block";
+        //$('._main').addClass('fixHeight');
+        birsel_populate(monthEl,months);
+        birsel_populate(yearEl,years);
+
+        // Scroll đến tháng/năm mặc định
+        birsel_scrollToIndex(monthEl,defaultMonth);
+        birsel_scrollToIndex(yearEl,defaultYear-1900);
+
+        setTimeout(() => {
+            birsel_updateDaysOnce();
+            setTimeout(() => {
+                birsel_scrollToIndex(dayEl,defaultDay);
+            },10);
+        },10);
+    });
+
+    birsel_attachScroll(monthEl,birsel_updateDaysOnce);
+    birsel_attachScroll(yearEl,birsel_updateDaysOnce);
+    birsel_attachScroll(dayEl);
+    function birsel_bodClose(){
+        overlay.style.display="none";
+       // $('._main').removeClass('fixHeight');
+    }
+    doneBtn.addEventListener("click",() => {
+        const m=Math.round(monthEl.scrollTop/40) +1;
+        const d=Math.round(dayEl.scrollTop/40)+1;
+        const y=1900+Math.round(yearEl.scrollTop/40);
+
+        if (m < 1 || d < 1 || y < 1900) {
+            alert(Outlang["Sys_vui_long_chon_ngay_hop_le"] || "Vui lòng chọn ngày hợp lệ.");
+            return;
+        }
+
+        const dateStr=`${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+        dateInput.value=dateStr;
+        overlay.style.display="none";
+       // $('._main').removeClass('fixHeight');
+    });
+</script>
+
+
+<style>
+    #date-input.error {
+        background: #FFF6F6 !important;
+        border-color: #E0B4B4 !important;
+        color: #9F3A38 !important;
+    }
+    ._main.fixHeight {
+        height: 90vh;
+        overflow-y: auto;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    .popup {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 300px;
+        background: #fff;
+        border-radius: 16px 16px 0 0;
+        padding: 20px 10px;
+        animation: slideUp 0.3s ease-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 35px;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+        }
+
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    .spinner-wrapper {
+        height: 200px; /* 5 dòng x 40px */
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        position: relative;
+    }
+
+    .spinner {
+        width: 100px;
+        height: 100%;
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+        scroll-padding: 80px 0;
+        -webkit-overflow-scrolling: touch;
+        text-align: center;
+    }
+
+        .spinner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .spinner div {
+            height: 40px;
+            line-height: 40px;
+            scroll-snap-align: center;
+            font-size: 16px;
+            color: #666;
+        }
+
+            .spinner div.highlight {
+                font-weight: bold;
+                color: #000;
+            }
+
+    .highlight-overlay {
+        position: absolute;
+        top: 114px;
+        height: 40px;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.05);
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        z-index: 2;
+    }
+    .bodclose {
+        width: 30px;
+       
+        display: flex;
+        justify-content: end;
+        position: absolute;
+        right: 12px;
+        padding: 7px;
+        border-radius: 20px;
+        font-size: 17px;
+        top: 10px;
+    }
+    #doneBtn{
+
+    }
+   /* .done-btn {
+        width: 100%;
+        padding: 12px;
+        background: #007AFF;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }*/
+</style>
